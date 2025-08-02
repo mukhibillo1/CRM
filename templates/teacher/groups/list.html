@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body id="kt_body"
+    class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+    {% include "teacher/parts/header-mobile.html" %}
+    <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-row flex-column-fluid page">
+            {% include "teacher/parts/aside.html" with menu_parent="group" menu_child="group-all" %}
+            <div class="d-flex flex-column flex-row-fluid wrapper pt-0" id="kt_wrapper">
+                {% include "teacher/parts/header.html" %}
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="d-flex flex-column-fluid">
+                        <div class="container mt-20">
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                    <div class="card-title">
+                                        <h3 class="card-label">All Groups</h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <a href="{% url 'common:group-create' %}" class="btn btn-primary font-weight-bolder">Add</a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form method="get" class="mb-7">
+                                        <div class="form-group row">
+                                            <div class="col-lg-3 mt-5">
+                                                <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-5 ml-7">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    {% if objects %}
+                                    <table class="table table-bordered table-hover table-checkable mt-3">
+                                        <thead> 
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Course</th>
+                                                <th>Teacher</th>
+                                                <th>Students count</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for group in objects %}
+                                            <tr>
+                                                <td><a href="{% url 'teacher:attendance_journal' group.pk %}">{{group.title}}</a></td>
+                                                <td>{{group.course}}</td>
+                                                <td>{{group.teacher.username}}</td>
+                                                <td>{{ group.students.count }}</td>
+                                                
+
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                        {% include "extensions/there_nothing_we_can_do.html" %}
+                                    {% endif %}
+
+                                    {% if is_paginated %}
+                                    {% include "extensions/pagination.html" %}
+                                    {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include "teacher/parts/footer.html" %}
+            </div>
+        </div>
+    </div>
+    {% include "teacher/parts/user-panel.html" %}
+    {% include "teacher/parts/scrolltop.html" %}
+</body>
+{% endblock %}

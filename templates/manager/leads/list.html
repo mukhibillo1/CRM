@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+  {% include "manager/parts/header-mobile.html" %}
+
+  <div class="d-flex flex-column flex-root">
+    
+    <div class="d-flex flex-row flex-column-fluid page">
+
+      {% include "manager/parts/aside.html" with menu_parent="lead" menu_child="lead-all" %}
+
+      <!-- wrapper -->
+      <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper" style="min-height: 100vh; display: flex; flex-direction: column;">
+
+        {% include "manager/parts/header.html" %}
+
+        <!-- content -->
+        <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+            
+            
+            <div class="d-flex flex-column-fluid">
+                
+                <div class="container">
+                <div class="card card-custom mb-10">
+                  <div class="card-header">
+                    <h3 class="card-title">Lead statistics by status</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%;">
+                      <canvas id="leadStatusChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              <div class="card card-custom">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="mt-8">
+                                        <h3 class="card-title">All Leads</h3>
+                                    {% with request.GET.period as current_period %}
+                                    <div class="mt-4 d-flex mb-8">
+                                        <a href="?status=rejected{% if current_period %}&period={{ current_period }}{% endif %}"
+                                        class="btn font-weight-bold mr-2 {% if request.GET.status == 'rejected' %}btn-danger{% else %}btn-light-danger{% endif %}">
+                                            Rejected
+                                        </a>
+                                        <a href="?status=approved{% if current_period %}&period={{ current_period }}{% endif %}"
+                                        class="btn font-weight-bold mr-2 {% if request.GET.status == 'approved' %}btn-primary{% else %}btn-light-primary{% endif %}">
+                                            Approved
+                                        </a>
+                                        <a href="?status=in_progress{% if current_period %}&period={{ current_period }}{% endif %}"
+                                        class="btn font-weight-bold {% if request.GET.status == 'in_progress' %}btn-warning{% else %}btn-light-warning{% endif %}">
+                                            In Progress
+                                        </a>
+                                    </div>
+                                    {% endwith %}
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <a href="{% url 'manager:lead-create' %}" class="btn btn-primary font-weight-bold">Add Lead</a>
+                                    </div>
+                                </div>
+
+                <div class="card-body pt-2">
+                                            <div class="container">
+                            <div class="card card-custom ">
+
+                            </div>
+
+                            <div class="card card-custom card-stretch">
+                                <div class="card-header border-0 pt-5">
+                                    <h3 class="card-title align-items-start flex-column">
+                                        <span class="card-label font-weight-bolder text-dark">Leads</span>
+                                        <span class="text-muted mt-3 font-weight-bold font-size-sm">Over 400+ leads</span>
+                                    </h3>
+
+                            <div class="card-toolbar">
+                                <ul class="nav nav-pills nav-pills-sm nav-dark-75">
+                                    {% with request.GET.status as current_status %}
+                                        <li class="nav-item">
+                                            <a class="nav-link py-2 px-4 {% if request.GET.period == 'month' %}active{% endif %}"
+                                            href="?period=month{% if current_status %}&status={{ current_status }}{% endif %}">Month</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-2 px-4 {% if request.GET.period == 'week' %}active{% endif %}"
+                                            href="?period=week{% if current_status %}&status={{ current_status }}{% endif %}">Week</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link py-2 px-4 {% if request.GET.period == 'day' or not request.GET.period %}active{% endif %}"
+                                            href="?period=day{% if current_status %}&status={{ current_status }}{% endif %}">Day</a>
+                                        </li>
+                                    {% endwith %}
+                                </ul>
+                            </div>
+
+                                </div>
+                                <div class="card-body pt-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-borderless table-vertical-center">
+                                            <thead>
+                                                <tr class="text-left text-muted font-weight-bold">
+                                                    <th class="pl-0">Status</th>
+                                                    <th>Name & Email</th>
+                                                    <th class="text-right">Phone</th>
+                                                    <th class="text-right">Course</th>
+                                                    <th class="text-right">Status</th>
+                                                    <th class="text-right pr-0">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for lead in objects %}
+                                                <tr>
+                                                    <td class="pl-0 py-4">
+                                                        <div class="symbol symbol-50 symbol-light">
+                                                <span class="symbol-label">
+                                                    {% if lead.status == 'rejected' %}
+                                                        <span class="bullet bullet-bar bg-danger h-25px w-25px"></span>
+                                                    {% elif lead.status == 'approved' %}
+                                                        <span class="bullet bullet-bar bg-primary h-25px w-25px"></span>
+                                                    {% elif lead.status == 'progress' %}
+                                                        <span class="bullet bullet-bar bg-warning h-25px w-25px"></span>
+                                                    {% else %}
+                                                        <span class="bullet bullet-bar bg-secondary h-25px w-25px"></span>
+                                                    {% endif %}
+                                                </span>
+
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl-0">
+                                                        <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ lead.full_name }}</a>
+                                                        <div><span class="font-weight-bold">Email:</span> <span class="text-muted">{{ lead.email }}</span></div>
+                                                    </td>
+                                                    <td class="text-right">{{ lead.phone }}</td>
+                                                    <td class="text-right">{{ lead.course.title }}</td>
+                                                    <td class="text-right">
+
+                                                        {% if lead.status == 'rejected' %}
+                                                            <span class="label label-lg label-light-danger label-inline">Rejected</span>
+                                                        {% elif lead.status == 'approved' %}
+                                                            <span class="label label-lg label-light-primary label-inline">Approved</span>
+                                                        {% elif lead.status == 'progress' %}
+                                                            <span class="label label-lg label-light-warning label-inline">In Progress</span>
+                                                        {% else %}
+                                                            <span class="label label-lg label-light-secondary label-inline">Unknown</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-right pr-0">
+                                                        <!-- Кнопка редактирования -->
+                                                        <a href="{% url 'manager:lead-update' lead.id %}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1">
+                                                            <i class="fas fa-edit text-primary"></i>
+                                                        </a>
+
+                                                        <button type="button" class="btn btn-icon btn-light btn-hover-danger btn-sm mx-1" data-toggle="modal" data-target="#deleteModal{{ lead.pk }}">
+                                                            <i class="fas fa-trash-alt text-danger"></i>
+                                                        </button>
+
+
+                                                        <div class="modal fade" id="deleteModal{{ lead.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ lead.pk }}" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body text-center">
+                                                                        <h4 class="mb-3">Ўчириш</h4>
+                                                                        <p>Ишончингиз комилми?</p>
+                                                                        <div class="d-flex justify-content-center">
+                                                                            <button type="button" class="btn btn-outline-secondary mr-3" data-dismiss="modal">Ортга қайтиш</button>
+                                                                            <a href="{% url 'manager:lead-delete' lead.pk %}" class="btn btn-danger">Ўчириш</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% empty %}
+                                                <tr><td colspan="6" class="text-center text-muted py-10">No leads found</td></tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /content -->
+
+        <!-- footer -->
+          {% include "manager/parts/footer.html" %}
+  
+        <!-- /footer -->
+
+      </div>
+      <!-- /wrapper -->
+
+    </div>
+  </div>
+
+  {% include "manager/parts/user-panel.html" %}
+  {% include "manager/parts/scrolltop.html" %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("{% url 'manager:lead-status-stats' %}")
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('leadStatusChart').getContext('2d');
+            const labels = data.map(item => item.status);
+            const counts = data.map(item => item.count);
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Количество лидов',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+
+</body>
+{%endblock%}

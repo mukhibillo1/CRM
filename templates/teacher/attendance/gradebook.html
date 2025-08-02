@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% load extra_tags %}
+
+<!--begin::Head--> 
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body"
+	class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+	<!--begin::Main-->
+	<!--begin::Header Mobile-->
+	{% include "teacher/parts/header-mobile.html" %}
+	<!--end::Header Mobile-->
+	<div class="d-flex flex-column flex-root">
+		<!--begin::Page-->
+		<div class="d-flex flex-row flex-column-fluid page">
+			<!--begin::Aside-->
+			{% include "teacher/parts/aside.html" %}
+			<!--end::Aside-->
+			<!--begin::Wrapper-->
+			<div class="d-flex flex-column flex-row-fluid wrapper pt-0" id="kt_wrapper">
+				<!--begin::Header-->
+				{% include "teacher/parts/header.html" %}
+				<!--end::Header-->
+				<!--begin::Content-->
+				<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+					<div class="d-flex flex-column-fluid">
+            <div class="container mt-5" >
+  <div class="">
+      <div class="max-width">
+          <!-- Header -->
+          <div class="header p-15 pb-20 mt-6">
+              <div class="header-content">
+                  <div class="header-title">
+                      <h1> Attendance   – {{ group.title }} group </h1>
+                      <p>Student attendance management</p>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Controls -->
+
+
+          <!-- Stats -->
+          <div class="stats-grid">
+              <div class="stat-card">
+                  <div class="stat-card-content">
+                      <div>
+                          <div class="stat-number" id="total-students">0</div>
+                          <div class="stat-label">Students</div>
+                      </div>
+                      <div class="stat-icon blue">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                          </svg>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="stat-card">
+                  <div class="stat-card-content">
+                      <div>
+                          <div class="stat-number" id="total-lessons">0</div>
+                          <div class="stat-label">Lesson days</div>
+                      </div>
+                      <div class="stat-icon indigo">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                          </svg>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="stat-card">
+                  <div class="stat-card-content">
+                      <div>
+                          <div class="stat-number emerald" id="total-present">0</div>
+                          <div class="stat-label">Presents</div>
+                      </div>
+                      <div class="stat-icon emerald">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="stat-card">
+                  <div class="stat-card-content">
+                      <div>
+                          <div class="stat-number red" id="total-absent">0</div>
+                          <div class="stat-label">Absents</div>
+                      </div>
+                      <div class="stat-icon red">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="bg-white shadow-sm rounded pt-3 mb-5 ">
+
+
+          </div>
+
+
+
+          <div class="controls d-flex">
+              <div class="ml-5 mr-15">
+                  <!-- Add Student -->
+                                    <form method="get" class="mb-7">
+                                        <div class="form-group row">
+                                            <div class="mt-5">
+                                                <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" style="width: 150px;" placeholder="Search">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-5 ml-3">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        </div>
+                                    </form>
+
+              </div>
+                          <form method="get" class="d-flex flex-wrap gap-3 align-items-center mb-4">
+    
+              <!-- Год (select) -->
+              
+              <!-- Месяцы (кнопки) -->
+              <div class="btn-group" role="group">
+                {% for number, name in months %}
+                <button type="submit" name="month" value="{{ number }}"
+                class="btn btn-sm border border-primary mr-2 rounded {% if number == selected_month %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                {{ name }}
+              </button>
+              {% endfor %}
+            </div>
+
+            <select name="year" class="form-select w-auto">
+              {% for y in years %}
+                <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+              {% endfor %}
+            </select>
+    
+            </form>
+          </div>
+          <!-- Attendance Table -->
+      </div>
+  </div>
+  <div class="table-responsive bg-white shadow-sm rounded p-4">
+    <table class="table table-bordered text-center align-middle mb-0">
+      <thead class="bg-light text-muted">
+        <tr>
+          <th class="pb-7">Students</th>
+          {% for lesson in lessons %}
+<th>
+
+<div class="text-center">
+  {{ lesson.date.day }} {{ lesson.date.month|get_month_name }}
+</div>
+
+</th>
+
+      
+          {% endfor %}
+        </tr>
+      </thead>
+<tbody>
+  {% if not lessons %}
+    <tr>
+      <td colspan="{{ students|length|add:'1' }}" class="text-center py-5">Ushbu oyda hech qanday dars yo'q.</td>
+    </tr>
+  {% else %}
+    {% for student in students %}
+      <tr>
+        <td class="text-start col-2 pt-6">{{ student.get_full_name|default:student.username }}</td>
+        {% for lesson in lessons %}
+          {% with att=attendance|get_item:student.id|get_item:lesson.id %}
+          <td class="position-relative">
+            <button class="btn btn-sm btn-check p-1
+              {% if att %}
+                {% if att.is_present %}present{% else %}absent{% endif %}
+              {% endif %}"
+              data-student="{{ student.id }}"
+              data-lesson="{{ lesson.id }}"
+              onclick="toggleAttendance(this)"
+              {% if lesson.date > today %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+              {% if att %}
+                {% if att.is_present %}
+                  <i class="fa-solid fa-square-check fa-2xl" style="color: #26a269; font-size: 30px;"></i>
+                {% else %}
+                  <i class="fa-solid fa-square-xmark fa-2xl" style="color: #a51d2d; font-size: 30px;"></i>
+                {% endif %}
+              {% else %}
+                -
+              {% endif %}
+            </button>
+          </td>
+          {% endwith %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  {% endif %}
+</tbody>
+
+    </table>
+  </div>
+</div>
+
+
+					</div> <!-- .d-flex.flex-column-fluid -->
+				</div>
+				<!--end::Content-->
+				<!--begin::Footer-->
+				<!--end::Footer-->
+				{% include "teacher/parts/footer.html" %}
+			</div>
+			<!--end::Wrapper-->
+		</div>
+		<!--end::Page-->
+	</div>
+	<!--end::Main-->
+	<!-- begin::User Panel-->
+	{% include "teacher/parts/user-panel.html" %}
+	<!--begin::Quick Cart-->
+	<!--end::Quick Cart-->
+	<!--begin::Quick Panel-->
+	<!--end::Quick Panel-->
+	<!--begin::Chat Panel-->
+	<!--end::Chat Panel-->
+	<!--begin::Scrolltop-->
+	{% include "teacher/parts/scrolltop.html" %}
+	<!--end::Scrolltop-->
+	<!--begin::Sticky Toolbar-->
+	<!--end::Sticky Toolbar-->
+	<!--begin::Demo Panel-->
+	<!--end::Demo Panel-->
+	<!--end::Page Scripts-->
+
+
+</body>
+<!--end::Body-->
+
+<script>
+  const groupId = {{ group.id }};
+</script>
+
+
+<script>
+
+
+
+  function toggleAttendance(button) {
+    const studentId = button.dataset.student;
+    const lessonId = button.dataset.lesson;
+    const isPresent = button.classList.contains('present') ? false : true;
+
+    fetch("{% url 'teacher:update_attendance' %}", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({
+        student_id: studentId,
+        lesson_id: lessonId,
+        is_present: isPresent
+      })
+    }).then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          button.classList.remove('present', 'absent');
+          if (isPresent) {
+            button.classList.add('present');
+            button.innerHTML = '<i class="fa-solid fa-square-check fa-2xl" style="color: #26a269; font-size: 30px;"></i>';
+          } else {
+            button.classList.add('absent');
+            button.innerHTML = '<i class="fa-solid fa-square-xmark fa-2xl" style="color: #a51d2d; font-size: 30px;"></i>';
+          }
+        }
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const yearSelect = document.querySelector('select[name="year"]');
+    if (yearSelect) {
+      yearSelect.addEventListener('change', function () {
+        this.form.submit();
+      });
+    }
+  });
+    document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+
+const year = new URLSearchParams(window.location.search).get("year") || new Date().getFullYear();
+const month = new URLSearchParams(window.location.search).get("month") || (new Date().getMonth() + 1);
+
+fetch(`/teacher/attendance/stats/${groupId}/?year=${year}&month=${month}`)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('total-students').innerText = data.total_students;
+    document.getElementById('total-lessons').innerText = data.total_lessons;
+    document.getElementById('total-present').innerText = data.total_present;
+    document.getElementById('total-absent').innerText = data.total_absent;
+  });
+
+
+
+</script>
+<style>
+  .lesson-title {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: auto;
+}
+</style>
+{% endblock %}

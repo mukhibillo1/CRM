@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body id="kt_body"
+	class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+	<!--begin::Main-->
+
+	<!--begin::Header Mobile-->
+	{% include "manager/parts/header-mobile.html" %}
+	<!--end::Header Mobile-->
+
+	<div class="d-flex flex-column flex-root">
+		<!--begin::Page-->
+		<div class="d-flex flex-row flex-column-fluid page">
+
+			<!--begin::Aside-->
+			{% include "manager/parts/aside.html" %}
+			<!--end::Aside-->
+
+			<!--begin::Wrapper-->
+			<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+
+				<!--begin::Header-->
+				{% include "manager/parts/header.html" %}
+				<!--end::Header-->
+
+				<!--begin::Content-->
+				<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+					<div class="d-flex flex-column-fluid">
+
+						<div class="container">
+							<div class="card card-custom mb-10">
+							<div class="card-header">
+								<h3 class="card-title">Lead statistics by status</h3>
+							</div>
+							<div class="card-body">
+								<div class="chart-container" style="position: relative; height:300px; width:100%;">
+								<canvas id="leadStatusChart"></canvas>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end::Content-->
+
+				<!--begin::Footer-->
+				{% include "manager/parts/footer.html" %}
+				<!--end::Footer-->
+
+			</div>
+			<!--end::Wrapper-->
+
+		</div>
+		<!--end::Page-->
+	</div>
+	<!--end::Main-->
+
+	<!--begin::User Panel-->
+	{% include "manager/parts/user-panel.html" %}
+	<!--end::User Panel-->
+
+	<!--begin::Scrolltop-->
+	{% include "manager/parts/scrolltop.html" %}
+	<!--end::Scrolltop-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("{% url 'manager:lead-status-stats' %}")
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('leadStatusChart').getContext('2d');
+            const labels = data.map(item => item.status);
+            const counts = data.map(item => item.count);
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total leads',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+
+</body>
+{% endblock %}

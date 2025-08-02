@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body id="kt_body"
+    class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+    {% include "app_receptionist/parts/header-mobile.html" %}
+
+    <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-row flex-column-fluid page">
+            {% include "app_receptionist/parts/aside.html" with menu_parent="course" menu_child="course-all" %}
+            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+                {% include "app_receptionist/parts/header.html" %}
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="d-flex flex-column-fluid">
+                        <div class="container">
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                    <div class="card-title">
+                                        <h3 class="card-label">All Courses</h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <a href="{% url 'common:course-create' %}" class="btn btn-primary font-weight-bolder">
+                                            <span class="svg-icon svg-icon-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                    <g fill="none">
+                                                        <rect width="24" height="24"/>
+                                                        <circle fill="#000000" cx="9" cy="15" r="6"/>
+                                                        <path d="M8.8,7C9.84,5.21 11.78,4 14,4c3.31,0 6,2.69 6,6 0,2.22 -1.21,4.16 -3,5.2 0-0.07 0-0.13 0-0.2 0-4.42 -3.58-8 -8-8C8.93,7 8.87,7 8.8,7Z" fill="#000000" opacity="0.3"/>
+                                                    </g>
+                                                </svg>
+                                            </span>
+                                            Add
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form method="get" class="mb-7">
+                                        <div class="form-group row">
+                                            <div class="col-lg-3 mt-5">
+                                                <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-5 ml-7">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        </div>
+                                    </form>
+                                    {% if objects %}
+                                    <table class="table table-bordered table-hover table-checkable" style="margin-top: 13px !important">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead> 
+                                        <tbody>
+                                            {% for object in objects %}
+                                            <tr>
+                                                <td>{{ object }}</td>
+                                                <td nowrap="nowrap">
+                                                    <a href="{% url 'common:course-update' object.pk %}" class="btn btn-sm btn-light btn-icon mr-2" title="Edit">
+                                                        <i class="la la-edit"></i>
+                                                    </a>
+                                                    <a href="{% url 'common:course-delete' object.pk %}" data-toggle="modal" data-target="#deleteModal" class="btn btn-sm btn-clean btn-icon removeButton" title="Ўчириш">
+                                                        <i class="la la-trash"></i>
+                                                    </a>
+
+                                                    <!-- Delete Modal -->
+                                                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body text-center">
+                                                                    <h4 class="mb-3">Ўчириш</h4>
+                                                                    <p>Ишончингиз комилми?</p>
+                                                                    <div class="d-flex justify-content-center">
+                                                                        <button type="button" class="btn btn-outline-secondary mr-3" data-dismiss="modal">Ортга қайтиш</button>
+                                                                        <a href="{% url 'common:course-delete' object.pk %}" class="btn btn-danger">Ўчириш</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                        {% include "extensions/there_nothing_we_can_do.html" %}
+                                    {% endif %}
+
+                                    {% if paginator.count > 5 %}
+                                        {% include "extensions/pagination.html" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include "app_receptionist/parts/footer.html" %}
+            </div>
+        </div>
+    </div>
+
+    {% include "app_receptionist/parts/user-panel.html" %}
+    {% include "app_receptionist/parts/scrolltop.html" %}
+</body>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body id="kt_body"
+    class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+    {% include "manager/parts/header-mobile.html" %}
+    <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-row flex-column-fluid page">
+            {% include "manager/parts/aside.html" with menu_parent="group" menu_child="group-all" %}
+            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+                {% include "manager/parts/header.html" %}
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="d-flex flex-column-fluid">
+                        <div class="container">
+                            <div class="card card-custom">
+                                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                    <div class="card-title">
+                                        <h3 class="card-label">All Groups</h3>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <a href="{% url 'manager:group-create' %}" class="btn btn-primary font-weight-bolder">Add</a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form method="get" class="mb-7">
+                                        <div class="form-group row">
+                                            <div class="col-lg-3 mt-5">
+                                                <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-5 ml-7">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                    {% if objects %}
+                                    <table class="table table-bordered table-hover table-checkable mt-3">
+                                        <thead> 
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Course</th>
+                                                <th>Teacher</th>
+                                                <th>Students count</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for group in objects %}
+                                            <tr>
+                                                <td>{{group.title}}</td>
+                                                <td>{{group.course}}</td>
+                                                <td>{{group.teacher.username}}</td>
+                                                <td>{{ group.students.count }}</td>
+                                                
+                                        <td class="pl-0">
+                                            <a href="{% url 'manager:group-update' group.id %}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1">
+                                                <i class="fas fa-edit text-primary"></i>
+                                            </a>
+
+                                            <button type="button" class="btn btn-icon btn-light btn-hover-danger btn-sm mx-1" data-toggle="modal" data-target="#deleteModal{{ group.pk }}">
+                                                <i class="fas fa-trash-alt text-danger"></i>
+                                            </button>
+
+
+                                            <div class="modal fade" id="deleteModal{{ group.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ group.pk }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body text-center">
+                                                            <h4 class="mb-3">Ўчириш</h4>
+                                                            <p>Ишончингиз комилми?</p>
+                                                            <div class="d-flex justify-content-center">
+                                                                <button type="button" class="btn btn-outline-secondary mr-3" data-dismiss="modal">Ортга қайтиш</button>
+                                                                <a href="{% url 'manager:group-delete' group.pk %}" class="btn btn-danger">Ўчириш</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>   
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                        {% include "extensions/there_nothing_we_can_do.html" %}
+                                    {% endif %}
+
+                                    {% if paginator.count > 5 %}
+                                        {% include "extensions/pagination.html" %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include "manager/parts/footer.html" %}
+            </div>
+        </div>
+    </div>
+    {% include "manager/parts/user-panel.html" %}
+    {% include "manager/parts/scrolltop.html" %}
+</body>
+{% endblock %}

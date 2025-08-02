@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% include "manager/parts/header-mobile.html" %}
+<div class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        {% include "manager/parts/aside.html" with menu_parent="payment" menu_child="payment-create" %}
+        <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+            {% include "manager/parts/header.html" %}
+            <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                <div class="d-flex flex-column-fluid">
+                    <div class="container">
+                        <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">Add Payment</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" class="form">
+                                    {% csrf_token %}
+                                    {% for field in form %}
+                                    <div class="form-group row">
+                                        <label class="col-form-label text-right col-lg-3 col-sm-12" for="{{ field.auto_id }}">
+                                            {% if field.field.required %}<b>{{ field.label }}</b>{% else %}{{ field.label }}{% endif %}
+                                        </label>
+                                        <div class="col-lg-9 col-md-9 col-sm-12">
+                                            <span style="color:red;">{{ field.errors }}</span>
+                                            {{ field }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="card-footer">
+                                        <div class="row"> 
+                                            <div class="col-lg-3"></div>
+                                            <div class="d-flex">
+                                                <button type="submit" class="btn btn-primary mr-2" name="save-create">Save and add new</button>
+                                                <button type="submit" class="btn btn-primary mr-2" name="saved">Save</button>
+                                                <a href="{% url 'manager:payment-list' %}" class="btn btn-secondary">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include "manager/parts/footer.html" %}
+        </div>
+    </div>
+</div>
+{% include "manager/parts/user-panel.html" %}
+{% include "manager/parts/scrolltop.html" %}
+{% endblock %}

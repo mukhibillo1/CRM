@@ -1,0 +1,74 @@
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+    {% endif %}
+
+    {% for num in paginator.page_range %}
+      {% if num == page_obj.number %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+      {% elif num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% elif num == 1 or num == paginator.num_pages %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% elif num == page_obj.number|add:"-3" or num == page_obj.number|add:"3" %}
+        <li class="page-item">
+          <a href="#" class="page-link" onclick="showPageInput(event)">…</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+    {% endif %}
+
+  </ul>
+</nav>
+
+
+<div id="pageInputBox" style="display:none; text-align:center; margin-top:10px;">
+  <form method="get" onsubmit="return goToPage(event)" class="d-inline-block">
+    <label>Перейти на страницу:</label>
+    <input type="number" min="1" max="{{ paginator.num_pages }}" name="page" id="pageInput" class="form-control d-inline-block" style="width:100px; display:inline-block;" required>
+    <div class="d-flex">
+      <button type="submit" class="btn btn-sm btn-primary mr-2">OK</button>
+      <button type="button" class="btn btn-sm btn-secondary" onclick="cancelPageInput()">Отмена</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function showPageInput(e) {
+    e.preventDefault();
+    document.getElementById('pageInputBox').style.display = 'block';
+    document.getElementById('pageInput').focus();
+  }
+
+  function cancelPageInput() {
+    document.getElementById('pageInputBox').style.display = 'none';
+  }
+
+  function goToPage(e) {
+    e.preventDefault();
+    const page = document.getElementById('pageInput').value;
+    if (page) {
+      window.location.href = '?page=' + page;
+    }
+    return false;
+  }
+</script>
+{% endif %}

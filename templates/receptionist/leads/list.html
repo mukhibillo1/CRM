@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+    {% include "app_receptionist/parts/header-mobile.html" %}
+    <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-row flex-column-fluid page">
+            {% include "app_receptionist/parts/aside.html" with menu_parent="lead" menu_child="lead-all" %}
+            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+                {% include "app_receptionist/parts/header.html" %}
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="d-flex flex-column-fluid">
+                        <div class="container">
+                            <div class="card card-custom">
+                                <div class="card-header">
+                                    <h3 class="card-title">All Leads</h3>
+                                    <div class="card-toolbar">
+                                        <a href="{% url 'common:lead-create' %}" class="btn btn-primary">Add</a>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    {% include "common/list_table.html" with objects=objects model_name="lead" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include "app_receptionist/parts/footer.html" %}
+            </div>
+        </div>
+    </div>
+    {% include "app_receptionist/parts/user-panel.html" %}
+    {% include "app_receptionist/parts/scrolltop.html" %}
+</body>
+{% endblock %}
