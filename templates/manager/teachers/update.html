@@ -7,18 +7,18 @@
     class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
     <!--begin::Main-->
     <!--begin::Header Mobile-->
-    {% include "parts/header-mobile.html" %}
+    {% include "manager/parts/header-mobile.html" %}
     <!--end::Header Mobile-->
     <div class="d-flex flex-column flex-root">
         <!--begin::Page-->
         <div class="d-flex flex-row flex-column-fluid page">
             <!--begin::Aside-->
-            {% include "parts/aside.html" with menu_parent='teachers' menu_child='teacher_create' %}
+            {% include "manager/parts/aside.html" with menu_parent='teachers' menu_child='teacher_create' %}
             <!--end::Aside-->
             <!--begin::Wrapper-->
             <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                 <!--begin::Header-->
-                {% include "parts/header.html" %}
+                {% include "manager/parts/header.html" %}
                 <!--end::Header-->
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -49,17 +49,13 @@
                                         </div>
                                         {% endfor %}    
                                     </div>
-                                    <div class="card-footer">
+                                   <div class="card-footer">
                                         <div class="row">
-                                            <div class="col-2"></div>
-                                            <div class="col-10">
-                                                <button type="submit" class="btn btn-success mr-2" name="saved">
-                                                   Save 
-                                                </button>
-                                                <button type="submit" class="btn btn-success mr-2" name="save-create">
-                                                   Save and add new
-                                                </button>
-                                                <a href="{% url 'common:teacher-list' %}" class="btn btn-secondary"><span>Cancel</span></a>
+                                            <div class="col-lg-3"></div>
+                                            <div class="d-flex">
+                                                <button type="submit" class="btn btn-primary mr-2" name="save-create">Save and add new</button>
+                                                <button type="submit" class="btn btn-primary mr-2" name="saved">Save</button>
+                                                <a href="{% url 'manager:teacher-create' %}" class="btn btn-secondary"><span>Cancel</span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +68,7 @@
                 </div>
                 <!--end::Content-->
                 <!--begin::Footer-->
-                {% include "parts/footer.html" %}
+                {% include "manager/parts/footer.html" %}
                 <!--end::Footer-->
             </div>
             <!--end::Wrapper-->
@@ -81,7 +77,7 @@
     </div>
     <!--end::Main-->
     <!-- begin::User Panel-->
-    {% include "parts/user-panel.html" %}
+    {% include "manager/parts/user-panel.html" %}
     <!--begin::Quick Cart-->
     <!--end::Quick Cart-->
     <!--begin::Quick Panel-->
@@ -89,7 +85,7 @@
     <!--begin::Chat Panel-->
     <!--end::Chat Panel-->
     <!--begin::Scrolltop-->
-    {% include "parts/scrolltop.html" %}
+    {% include "manager/parts/scrolltop.html" %}
     <!--end::Scrolltop-->
     <!--begin::Sticky Toolbar-->
     <!--end::Sticky Toolbar-->

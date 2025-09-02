@@ -248,31 +248,65 @@
 </li>
 
 
-<li class="menu-item menu-item-submenu {% if menu_parent == 'teacher' %} menu-item-open {% endif %}" aria-haspopup="true" data-menu-toggle="hover">
-    <a href="javascript:;" class="menu-link menu-toggle">
-        <span class="svg-icon menu-icon">👨‍🏫</span>
-        <span class="menu-text">Teachers</span>
-        <i class="menu-arrow"></i>
-    </a>
-    <div class="menu-submenu">
-        <i class="menu-arrow"></i>
-        <ul class="menu-subnav">
-            <li class="menu-item {% if menu_child == 'teacher-create' %} menu-item-active {% endif %}" aria-haspopup="true">
-                <a href="{% url 'manager:teacher-create' %}" class="menu-link">
-                    <i class="menu-bullet menu-bullet-line"><span></span></i>
-                    <span class="menu-text">Add Teacher</span>
-                </a>
-            </li>
-            <li class="menu-item {% if menu_child == 'teacher-list' %} menu-item-active {% endif %}" aria-haspopup="true">
-                <a href="{% url 'manager:teacher-list' %}" class="menu-link">
-                    <i class="menu-bullet menu-bullet-line"><span></span></i>
-                    <span class="menu-text">All Teachers</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</li>
+    <li class="menu-item menu-item-submenu {% if menu_parent == 'teachers' %}menu-item-open{% endif %}"
+                    aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon ">
+                            <!--begin::Svg Icon | path:/static/assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                                <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path
+                                        d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
+                                        fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                    <path
+                                        d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z"
+                                        fill="#000000" fill-rule="nonzero" />
+                                </g>
+                                <path fill="currentColor"
+                                    d="M192 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-8 384l0-128 16 0 0 128c0 17.7 14.3 32 32 32s32-14.3 32-32l0-288 56 0 64 0 16 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-16 0 0-64 192 0 0 192-192 0 0-32-64 0 0 48c0 26.5 21.5 48 48 48l224 0c26.5 0 48-21.5 48-48l0-224c0-26.5-21.5-48-48-48L368 0c-26.5 0-48 21.5-48 48l0 80-76.9 0-65.9 0c-33.7 0-64.9 17.7-82.3 46.6l-58.3 97c-9.1 15.1-4.2 34.8 10.9 43.9s34.8 4.2 43.9-10.9L120 256.9 120 480c0 17.7 14.3 32 32 32s32-14.3 32-32z" />
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
 
+                        <span class="menu-text">Teachers</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                <span class="menu-link">
+                                    <span class="menu-text">Teachers</span>
+                                </span>
+                            </li>
+                            <li class="menu-item menu-item-submenu {% if menu_child == 'teacher_list' %}menu-item-active{% endif %}"
+                                aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'manager:teacher-create' %}" class="menu-link menu-toggle">
+                                    <i class="menu-bullet menu-bullet-line">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Create Teachers</span>
+                                    <span class="menu-label">
+                                    </span>
+                                </a>
+
+                            </li>
+                            <li class="menu-item menu-item-submenu {% if menu_child == 'teacher_create' %}menu-item-active{% endif %}"
+                                aria-haspopup="true" data-menu-toggle="hover">
+                                <a href="{% url 'manager:teacher-list' %}" class="menu-link menu-toggle">
+                                    <i class="menu-bullet menu-bullet-line">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">All Teacher</span>
+                                    <span class="menu-label">
+                                    </span>
+                                </a>
+
+                            </li>
+                    </div>
+                </li>        
             </ul>
             <!--end::Menu Nav-->
         </div>

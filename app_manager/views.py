@@ -523,7 +523,7 @@ class UserDeleteView(DeleteView):
 
 
 
-class TeacherListView(RoleRequiredMixin, ListView):
+class TeacherListView( ListView):
 
     model = Teacher
     template_name = "manager/teachers/list.html"
@@ -537,7 +537,7 @@ class TeacherListView(RoleRequiredMixin, ListView):
         return kwargs
 
 
-class TeacherCreateView(RoleRequiredMixin, CreateView):
+class TeacherCreateView(CreateView):
 
     model = Teacher
     form_class = forms.TeacherForm
@@ -547,7 +547,7 @@ class TeacherCreateView(RoleRequiredMixin, CreateView):
     success_create_url = "manager:teacher-create"
 
 
-class TeacherUpdateView(RoleRequiredMixin, UpdateView):
+class TeacherUpdateView(UpdateView):
 
     model = Teacher
     form_class = forms.TeacherForm
@@ -557,7 +557,7 @@ class TeacherUpdateView(RoleRequiredMixin, UpdateView):
     success_update_url = "manager:teacher-update"
 
 
-class TeacherDeleteView(RoleRequiredMixin, DeleteView):
+class TeacherDeleteView(DeleteView):
 
     model = Teacher
     success_url = "manager:teacher-list"
