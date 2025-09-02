@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Course, Group, Lesson, Attendance, Lead, Payment
+from .models import User, Course, Group, Lesson, Attendance, Lead, Payment,Teacher
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -70,3 +70,14 @@ class PaymentAdmin(admin.ModelAdmin):
     search_fields = ('student__username',)
     list_filter = ('date',)
     ordering = ['-date']
+
+
+
+
+
+
+@admin.register(Teacher)
+class TeacherAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "last_name", "birth_date", "phone_or_email", "address")
+    search_fields = ("name", "last_name", "phone_or_email")
+    list_filter = ("birth_date",)

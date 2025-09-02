@@ -221,6 +221,58 @@
     </div>
 </li>
 
+
+<li class="menu-item menu-item-submenu {% if menu_parent == 'payment' %} menu-item-open {% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+    <a href="javascript:;" class="menu-link menu-toggle">
+        <span class="svg-icon menu-icon">💰</span>
+        <span class="menu-text">user</span>
+        <i class="menu-arrow"></i>
+    </a>
+    <div class="menu-submenu">
+        <i class="menu-arrow"></i>
+        <ul class="menu-subnav">
+            <li class="menu-item {% if menu_child == 'payment-create' %} menu-item-active {% endif %}" aria-haspopup="true">
+                <a href="{% url 'manager:user-create' %}" class="menu-link">
+                    <i class="menu-bullet menu-bullet-line"><span></span></i>
+                    <span class="menu-text">Add Payment</span>
+                </a>
+            </li>
+            <li class="menu-item {% if menu_child == 'payment-list' %} menu-item-active {% endif %}" aria-haspopup="true">
+                <a href="{% url 'manager:user-list' %}" class="menu-link">
+                    <i class="menu-bullet menu-bullet-line"><span></span></i>
+                    <span class="menu-text">All Payments</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
+
+
+<li class="menu-item menu-item-submenu {% if menu_parent == 'teacher' %} menu-item-open {% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+    <a href="javascript:;" class="menu-link menu-toggle">
+        <span class="svg-icon menu-icon">👨‍🏫</span>
+        <span class="menu-text">Teachers</span>
+        <i class="menu-arrow"></i>
+    </a>
+    <div class="menu-submenu">
+        <i class="menu-arrow"></i>
+        <ul class="menu-subnav">
+            <li class="menu-item {% if menu_child == 'teacher-create' %} menu-item-active {% endif %}" aria-haspopup="true">
+                <a href="{% url 'manager:teacher-create' %}" class="menu-link">
+                    <i class="menu-bullet menu-bullet-line"><span></span></i>
+                    <span class="menu-text">Add Teacher</span>
+                </a>
+            </li>
+            <li class="menu-item {% if menu_child == 'teacher-list' %} menu-item-active {% endif %}" aria-haspopup="true">
+                <a href="{% url 'manager:teacher-list' %}" class="menu-link">
+                    <i class="menu-bullet menu-bullet-line"><span></span></i>
+                    <span class="menu-text">All Teachers</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
+
             </ul>
             <!--end::Menu Nav-->
         </div>

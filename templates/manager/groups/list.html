@@ -18,7 +18,7 @@
                                         <h3 class="card-label">All Groups</h3>
                                     </div>
                                     <div class="card-toolbar">
-                                        <a href="{% url 'manager:group-create' %}" class="btn btn-primary font-weight-bolder">Add</a>
+                                        <a href="{% url 'manager:user-create' %}" class="btn btn-primary font-weight-bolder">Add</a>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -53,16 +53,16 @@
                                                 <td>{{ group.students.count }}</td>
                                                 
                                         <td class="pl-0">
-                                            <a href="{% url 'manager:group-update' group.id %}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1">
+                                            <a href="{% url 'manager:user-update' user.id %}" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1">
                                                 <i class="fas fa-edit text-primary"></i>
                                             </a>
 
-                                            <button type="button" class="btn btn-icon btn-light btn-hover-danger btn-sm mx-1" data-toggle="modal" data-target="#deleteModal{{ group.pk }}">
+                                            <button type="button" class="btn btn-icon btn-light btn-hover-danger btn-sm mx-1" data-toggle="modal" data-target="#deleteModal{{ user.pk }}">
                                                 <i class="fas fa-trash-alt text-danger"></i>
                                             </button>
 
 
-                                            <div class="modal fade" id="deleteModal{{ group.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ group.pk }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteModal{{ user.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ user.pk }}" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-body text-center">
@@ -70,7 +70,7 @@
                                                             <p>Ишончингиз комилми?</p>
                                                             <div class="d-flex justify-content-center">
                                                                 <button type="button" class="btn btn-outline-secondary mr-3" data-dismiss="modal">Ортга қайтиш</button>
-                                                                <a href="{% url 'manager:group-delete' group.pk %}" class="btn btn-danger">Ўчириш</a>
+                                                                <a href="{% url 'manager:user-delete' user.pk %}" class="btn btn-danger">Ўчириш</a>
                                                             </div>
                                                         </div>
                                                     </div>

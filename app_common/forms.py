@@ -1,11 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Course, Group, Lesson, Attendance, Lead, Payment
+from .models import User, Course, Group, Lesson, Attendance, Lead, Payment,Teacher
 from helpers import widgets as widget
 from ckeditor.widgets import CKEditorWidget
 from . import models
+from helpers import widgets
 
 
+# forms.py
 class UserForm(UserCreationForm):
     class Meta:
         model = User
@@ -17,6 +19,16 @@ class UserForm(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'role' in self.fields:
+            # "Manager" ni olib tashlash
+            self.fields['role'].choices = [
+                (value, label) for value, label in self.fields['role'].choices
+                if label != 'Manager'
+            ]
+
 
 
 class CourseForm(forms.ModelForm):
@@ -111,3 +123,30 @@ class PaymentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['student'].queryset = User.objects.filter(role='student')
         self.fields['group'].queryset = Group.objects.all()
+
+
+
+
+class TeacherForm(forms.ModelForm):
+    class Meta:
+        model = models.Teacher
+        fields = [
+            "name",
+            "last_name",
+            "birth_date",
+            "address",
+            "phone_or_email",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
+            "birth_date": widgets.DateWidget(
+                attrs={
+                    "class": "form-control",
+                    "id": "kt_datetimepicker_3",
+                }
+            ),
+            "address": forms.TextInput(attrs={"class": "form-control"}),
+            "phone_or_email": forms.TextInput(attrs={"class": "form-control"}),
+        }
+

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from django.contrib.auth.decorators import login_required
 app_name = "manager"
  
 urlpatterns = [
@@ -40,6 +40,17 @@ urlpatterns = [
     path('payments/<int:pk>/update/', views.PaymentUpdateView.as_view(), name='payment-update'),
     path('payments/', views.PaymentListView.as_view(), name='payment-list'),
     path('payments/<int:pk>/delete/', views.LessonDeleteView.as_view(), name='payment-delete'),
+    #User
+    path('manager/user/',views.UserListView.as_view(),name='user-list'),
+    path('manager/user/create/',views.UserCreateView.as_view(),name='user-create'),
+    path('manager/user/<int:pk>/update/',views.UserUpdateView.as_view(),name='user-update'),
+    path('manager/user/<int:pk>/delete/',views.UserDeleteView.as_view(),name='user-delete'),
 
+
+    path('manager/teacher/',views.TeacherListView.as_view(), name='teacher-list'),
+    path('manager/teacher-create/',views.TeacherCreateView.as_view(), name='teacher-create'),
+    path('manager/teacher/<int:pk>/update/',views.TeacherUpdateView.as_view(), name='teacher-update'),
+    path('manager/teacher/<int:pk>/delete/',views.TeacherDeleteView.as_view(), name='teacher-delete'),
+ 
 
 ]

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.db.models.deletion import SET_NULL, CASCADE
 
 class User(AbstractUser):
     groups = None
@@ -26,10 +28,33 @@ class Course(models.Model):
         return self.title
 
 
+
+class Teacher(models.Model):
+    name = models.CharField(_("name"), max_length=256)
+    last_name = models.CharField(_("last name"), max_length=256, null=True)
+    birth_date = models.DateField(_("birth date"))
+    phone_or_email = models.CharField(_("phone or email"), max_length=256)
+    address = models.CharField(_("address"), max_length=256)
+
+    class Meta:
+        db_table = _("teachers")
+        verbose_name = _("teacher")
+        verbose_name_plural = _("teacher")
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Group(models.Model):
+    teacher = models.ForeignKey(
+        Teacher,
+        on_delete=SET_NULL,
+        related_name=_("groups"),
+        null=True,
+        blank=True,
+    )
     title = models.CharField(max_length=50)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, limit_choices_to={'role': 'teacher'})
     students = models.ManyToManyField(User, through='StudentGroupInfo', related_name='groups')
     start_date = models.DateField()
     end_date = models.DateField()

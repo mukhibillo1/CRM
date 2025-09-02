@@ -3,7 +3,7 @@ from app_common.mixins import RoleRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from helpers.views import CreateView, UpdateView, DeleteView
-from app_common.models import Course, Group, Lesson, Attendance, Lead, Payment,User
+from app_common.models import Course, Group, Lesson, Attendance, Lead, Payment,User,Teacher
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from app_common.models import StudentGroupInfo
@@ -33,6 +33,7 @@ class ManagerHomeView(RoleRequiredMixin, TemplateView):
             'students': User.objects.filter(role='student'),
             'teachers': User.objects.filter(role='teacher'),
             'menu_parent': 'dashboard',
+            'user':User.objects.all(),
         })
         return context
 
@@ -96,6 +97,7 @@ class GroupCreateView(RoleRequiredMixin, CreateView):
     success_url = ('manager:group-list')
     allowed_roles = ['manager']
     success_create_url = "manager:group-create"
+
     def form_valid(self, form):
         response = super().form_valid(form)
         group = self.object
@@ -161,6 +163,7 @@ class LeadListView(RoleRequiredMixin, ListView):
     context_object_name = 'objects'
     allowed_roles = ['manager']
     paginate_by = 5
+
     def get_queryset(self):
         queryset = super().get_queryset()
         status = self.request.GET.get('status')
@@ -400,6 +403,7 @@ class PaymentCreateView(RoleRequiredMixin, CreateView):
     success_url = ('manager:payment-list')
     allowed_roles = ['manager']
     success_create_url = "manager:payment-create"
+
     def form_valid(self, form):
         response = super().form_valid(form)
         payment = form.instance
@@ -477,6 +481,86 @@ def custom_404(request, exception):
 
 
 
+
+
+
+
+class UserListView(ListView):
+    model = User
+    template_name = "manager/user/list.html"
+    context_object_name = "objects"  # template'da objects ishlatiladi
+
+    paginate_by = 10
+
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request  # formga request yuboramiz
+        return kwargs
+
+class UserCreateView(CreateView):
+    model = User
+    form_class = forms.UserForm
+    template_name = "manager/user/create.html"
+    context_object_name = "object"
+    success_url = "manager:user-list"
+    success_create_url = "manager:user-create"
+
+
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = forms.UserForm
+    template_name = "manager/user/update.html"
+    context_object_name = "object"
+    success_url = "manager:user-list"
+    success_update_url = "manager:user-update"
+
+
+class UserDeleteView(DeleteView):
+    model = User
+    success_url = "manager:user-list"
+
+
+
+
+class TeacherListView(RoleRequiredMixin, ListView):
+
+    model = Teacher
+    template_name = "manager/teachers/list.html"
+
+    context_object_name = "objects"
+    paginate_by = 10
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request  # formga request yuboramiz
+        return kwargs
+
+
+class TeacherCreateView(RoleRequiredMixin, CreateView):
+
+    model = Teacher
+    form_class = forms.TeacherForm
+    template_name = "manager/teachers/create.html"
+    context_object_name = "object"
+    success_url = "manager:teacher-list"
+    success_create_url = "manager:teacher-create"
+
+
+class TeacherUpdateView(RoleRequiredMixin, UpdateView):
+
+    model = Teacher
+    form_class = forms.TeacherForm
+    template_name = "manager/teachers/update.html"
+    context_object_name = "object"
+    success_url = "manager:teacher-list"
+    success_update_url = "manager:teacher-update"
+
+
+class TeacherDeleteView(RoleRequiredMixin, DeleteView):
+
+    model = Teacher
+    success_url = "manager:teacher-list"
 
 
 
